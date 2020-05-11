@@ -2,9 +2,18 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
+bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
+});
+
+app.post('/submit', function(req, res){
+  console.log(req.body);
+  io.emit('chat message', req.body.message);
+  res.send('ok')
 });
 
 io.on('connection', function(socket){
