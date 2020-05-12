@@ -24,6 +24,22 @@ def process_event_data(ev):
     date = ev['created_at']
     event_id = ev['id']
     seen_events[event_id] = True
+    if event_type == "PullRequestReviewCommentEvent":
+        pr_number = ev['payload']['pull_request']['number']
+        str_rep = "User: {0} requested a review on {1}/{2} at {3}".format(
+                user_name,
+                repo_name,
+                pr_number,
+                date)
+        return str_rep
+    if "Comment" in event_type:
+        issue = ev['payload']['issue']['number']
+        str_rep = "User: {0} Commented  on {1}/{2} at {3}".format(
+                user_name,
+                repo_name,
+                issue,
+                date)
+        return str_rep
     str_rep = "User: {0} did a {1} on {2} at {3}".format(
             user_name,
             event_type,
