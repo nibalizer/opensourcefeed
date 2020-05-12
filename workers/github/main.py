@@ -40,6 +40,12 @@ def process_event_data(ev):
                 issue,
                 date)
         return str_rep
+    if "Fork" in event_type:
+        str_rep = "User: {0} forked {1} at {2}".format(
+                user_name,
+                repo_name,
+                date)
+        return str_rep
     str_rep = "User: {0} did a {1} on {2} at {3}".format(
             user_name,
             event_type,
