@@ -16,6 +16,7 @@ if GH_API_KEY is None:
     print("Please set the GITHUB_API_KEY env variable")
     sys.exit(1)
 
+
 def process_event_data(ev):
     repo_name = ev['repo']['name']
     user_name = ev['actor']['login']
@@ -30,12 +31,15 @@ def process_event_data(ev):
             date)
     return str_rep
 
+
 def process_events(events):
     for ev in events:
         if seen_events.get(ev['id']) is None:
             ev_str = process_event_data(ev)
             print(ev_str)
-            requests.post("http://" + ttvopenfeed_host + "/submit", json={"message": ev_str})
+            requests.post("http://" + ttvopenfeed_host + "/submit",
+                          json={"message": ev_str})
+
 
 def get_events(slug, etag):
     headers = {
@@ -47,18 +51,21 @@ def get_events(slug, etag):
     print("getting events for ", slug)
     r = requests.get(url, headers=headers)
     print("Status Code: ", r.status_code)
-    print("Rate limit remaining:" , r.headers['X-RateLimit-Remaining'])
+    print("Rate limit remaining: ", r.headers['X-RateLimit-Remaining'])
     if r.status_code == 200:
         process_events(r.json())
-        #print(r.headers['ETag'])
         print(r.headers['X-Poll-Interval'])
     else:
         print("No new data")
+
+    # there is a leading "W/", signifies a 'weak etag'
     if 'W' in r.headers['ETag']:
-        etag = r.headers['ETag'][2:] # there is a leading "W/", signifies a 'weak etag'
+        etag = r.headers['ETag'][2:]
     else:
         etag = r.headers['ETag']
+
     return etag
+
 
 while True:
     print("ETag: ", etag)
