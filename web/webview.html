@@ -39,7 +39,10 @@
           if (msg.includes("Watch")) {
               element.prepend('<i class="fas fa-eye fa-fw"></i>');
           }
-          if (msg.includes("Issue")) {
+          if (msg.includes("Push")) {
+              element.prepend('<i class="fas fa-lightbulb fa-fw"></i>');
+          }
+          if (msg.includes("Issue") || msg.includes("Comment")) {
               element.prepend('<i class="fas fa-file-alt fa-fw"></i>');
           }
           $('#messages').append(element);
