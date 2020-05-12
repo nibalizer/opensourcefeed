@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Open Source Feed</title>
+    <script src="https://use.fontawesome.com/releases/v5.9.0/js/all.js" data-auto-replace-svg="nest"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; background-color: transparent}
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li { color: white; }
+      #messages li { font-size: x-large; }
+      #messages li:nth-child(odd) { background: #B8B8B8; }
+      #messages li:nth-child(even) { background: #404040; }
+      #messages li:nth-child(odd) { color: black; }
+      #messages { margin-bottom: 40px }
+    </style>
+  </head>
+  <body>
+    <div id="banner">
+      <h1> Open Source Feed</h1>
+    </div>
+    <ul id="messages"></ul>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      $(function () {
+        var socket = io();
+        $('form').submit(function(){
+          socket.emit('chat message', $('#m').val());
+          $('#m').val('');
+          return false;
+        });
+        socket.on('chat message', function(msg){
+          var element =  $('<li>').text(msg)
+          if (msg.includes("Pull") || msg.includes("Fork")) {
+              element.prepend('<i class="fas fa-code-branch fa-fw"></i>');
+          }
+          if (msg.includes("Watch")) {
+              element.prepend('<i class="fas fa-eye fa-fw"></i>');
+          }
+          if (msg.includes("Issue")) {
+              element.prepend('<i class="fas fa-file-alt fa-fw"></i>');
+          }
+          $('#messages').append(element);
+          window.scrollTo(0, document.body.scrollHeight);
+        });
+      });
+    </script>
+  </body>
+</html>
