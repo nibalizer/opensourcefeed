@@ -1,4 +1,3 @@
-#curl -I -H 'If-None-Match: "225e025cd3a5f36d6dc2c42ace4b2734"'  -s -H "Authorization: token $GITHUB_API_KEY" https://api.github.com/repos/kubernetes/kubernetes/events?page=5
 import os
 import sys
 import time
@@ -61,14 +60,7 @@ def get_events(slug, etag):
         etag = r.headers['ETag']
     return etag
 
-
-
-#slug = 'nibalizer/dotfiles'
-#slug = 'nibalizer/dotfiles'
-#slug = 'ibm-dev/watson-twitch-tone-analysis'
-
 while True:
     print("ETag: ", etag)
     etag = get_events(slug, etag)
     time.sleep(60)
-
