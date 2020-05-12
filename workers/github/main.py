@@ -69,7 +69,7 @@ def get_events(slug, etag):
     print("Status Code: ", r.status_code)
     print("Rate limit remaining: ", r.headers['X-RateLimit-Remaining'])
     if r.status_code == 200:
-        process_events(r.json())
+        process_events(r.json()[::-1])
         print(r.headers['X-Poll-Interval'])
     else:
         print("No new data")
