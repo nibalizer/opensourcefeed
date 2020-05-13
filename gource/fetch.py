@@ -2,6 +2,7 @@
 """Creates gource videos from CNCF devstats projects"""
 
 import os
+import subprocess
 import yaml
 
 import requests
@@ -12,7 +13,9 @@ def get_project_list(url):
     projects = yaml.load(requests.get(url).text)
     repos = []
     for project in projects['projects']:
-        repos.append(projects['projects'][project]['main_repo'])
+        # if graduated
+        if projects['projects'][project]['status'] == "Graduated":
+            repos.append(projects['projects'][project]['main_repo'])
     return list(filter(None, repos))  # remove the projects with no repo
 
 
@@ -22,6 +25,7 @@ def clone(project):
     if not os.path.exists(project.split("/")[1]):
         print("%s not found at %s, cloning" % (project, repo_name))
         # TODO: implement
+        subprocess.run(["git", "clone", "https://github.com/" + project, "git/" + repo_name])
     else:
         print("%s found at %s, pulling" % (project, repo_name))
         # TODO: implement
