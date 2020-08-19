@@ -6,7 +6,7 @@ import requests
 
 GH_API_KEY = os.environ.get('GITHUB_API_KEY')
 ttvopenfeed_host = "localhost:3000"
-slug = 'kubernetes/kubernetes'
+slug = 'kubernetes'
 etag = ""
 sleep_cycle = 60
 
@@ -69,7 +69,7 @@ def get_events(slug, etag):
             'If-None-Match': etag,
             'Authorization': "token " + GH_API_KEY,
             }
-    url = "https://api.github.com/repos/" + slug + "/events"
+    url = "https://api.github.com/orgs/" + slug + "/events"
     print("getting events for ", slug)
     r = requests.get(url, headers=headers)
     print("Status Code: ", r.status_code)
