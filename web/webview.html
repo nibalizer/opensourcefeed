@@ -46,6 +46,12 @@
               element.prepend('<i class="fas fa-file-alt fa-fw"></i>');
           }
           $('#messages').append(element);
+          // don't just fill this thing up forever for no reason
+          if ($("#messages li").length > 100) { 
+             $('#messages li:first').remove()
+          }
+
+
           window.scrollTo(0, document.body.scrollHeight);
         });
       });
